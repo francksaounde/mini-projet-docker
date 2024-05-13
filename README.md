@@ -1,1 +1,1 @@
-# mini-projet-docker
+# student-list

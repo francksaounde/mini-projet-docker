@@ -1,0 +1,27 @@
+services:
+    registry:
+        ports:
+            - 5000:5000
+        environment:
+            - REGISTRY_STORAGE_DELETE_ENABLED=true
+            - REGISTRY_HTTP_HEADERS_Access-Control-Allow-Methods=[HEAD,GET,OPTIONS,DELETE]
+            - REGISTRY_HTTP_HEADERS_Access-Control-Credentials=[true]
+            - REGISTRY_HTTP_HEADERS_Access-Control-Allow-Headers=[Authorization,Accept,Cache-Control]
+            - REGISTRY_HTTP_HEADERS_Access-Control-Expose-Headers=[Docker-Content-Digest]
+        networks:
+            - pozos-network-registry
+        container_name: pozos-backend-registry
+        image: registry:2
+    docker-registry-ui:
+        ports:
+            - 8090:80
+        environment:
+            - NGINX_PROXY_PASS_URL=http://pozos-backend-registry:5000
+            - DELETE_IMAGES=true
+            - REGISTRY_TITLE=pozos-images-registry
+        networks:
+            - pozos-network-registry
+        container_name: pozos-frontend-registry
+        image: joxit/docker-registry-ui:2
+networks:
+    pozos-network-registry:

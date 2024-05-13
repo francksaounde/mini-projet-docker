@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  web:
+    container_name: web_app
+    image: php:apache
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+    environment:
+      - USERNAME=toto
+      - PASSWORD=python
+    volumes:
+      - ./website:/var/www/html
+    networks:
+      - student_network
+  api:
+    container_name: api_app
+    build:
+      context: ./simple_api
+    volumes:
+      - "${PWD}/simple_api:/data"
+    ports:
+      - "5000:5000"
+    networks:
+      - student_network
+networks:
+    student_network:

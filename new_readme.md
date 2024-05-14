@@ -34,11 +34,17 @@ CMD ["python3", "./student_age.py"]
 Vérifions maintenant la liste des images disponibles et lançons la création de l’image       
 que nous appelons *api_image*, à partir du Dockerfile qu’on vient de modifier.     
 
-Puisqu’on est dans le répertoire qui contient le Dockerfile on indique le contexte courant par un point (‘.’)
- 
+Puisqu’on est dans le répertoire qui contient le Dockerfile on indique le contexte courant par un point (‘.’)             
+
+
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/build_api_image.png)
+
 Une fois l’image créée, vérifions de nouveau la liste des images,     
 Nous constatons qu’elle a été mise à jour :     
  
+
+![Alt text]()
+
 
 Nous pouvons donc lancer un container pour l’api à base de cette nouvelle image.      
 Nommons notre nouveau container *api_app*.        
@@ -51,14 +57,19 @@ docker run -d --name api_app -v ${PWD}:/data -p 5000:5000 api_image
 
 Ayant lancé le container en arrière-plan (grâce à l’option -d dans la commande), regardons la liste de tous nos containers (option -a)    
 Et interrogeons les logs pour confirmer que notre unique container est bien lancé et prêt à écouter:        
+
+![Alt text]()
  
 
 Nous allons maintenant effectuer une requête vers le container via la commande ‘curl’.       
 
 Nous modifions la commande fournie dans l’énoncé en ajoutant l’adresse de l’hôte -qui est notre machine virtuelle-   
-sur laquelle tourne le container (d’où localhost), et nous spécifions le port 5000 qui a été exposé.         
-
+sur laquelle tourne le container (d’où localhost), et nous spécifions le port 5000 qui a été exposé.     
 On peut donc voir les informations des étudiants enregistrés:         
+
+
+![Alt text]()
+
  
 
 ## Infrastructure As Code :
@@ -144,28 +155,43 @@ networks:
     student_network:
 ```
 
-Au préalable, supprimons le container créé précédemment
+Au préalable, supprimons le container créé précédemment             
  
 
-Mettons à jour le fichier docker-compose.yml
+![Alt text]()
+
+
+
+Mettons à jour le fichier docker-compose.yml               
  
+![Alt text]()
+
 
 Mettons à jour le fichier index.php avec le nom du container de l'api et le port exposé 
-(5000 tel que mentionné dans le docker-compose)
+(5000 tel que mentionné dans le docker-compose)                
  
+![Alt text]()
+
 
 Lançons maintenant notre stack par la commande ```docker-compose up```         
-Ensuite vérifions que notre stack est bien démarrée par la commande ```docker-compose ps```
+
+![Alt text]()
+
+
  
 
 Vérifions aussi que l’api est accessible via notre interface web.        
-Après avoir cliqué sur le bouton "List Student" nous avons bien la liste des étudiants enregistrés
+Après avoir cliqué sur le bouton "List Student" nous avons bien la liste des étudiants enregistrés         
+
+![Alt text]()
 
 
  
 ## Docker Registry 
 
-Au préalable nous supprimons la stack lancée précédemment, 
+Au préalable nous supprimons la stack lancée précédemment,         
+
+![Alt text]()
 
 
 Ensuite nous créons un répertoire *'registry'* et nous plaçons à l'intérieur. Puis nous créons    
@@ -177,8 +203,9 @@ mkdir registry
 cd registry/
 vi docker-compose.yml
 cat docker-compose.yml
- ```
+ ```                          
 
+![Alt text]()
 
 
 - Nous mettons le registry et l'interface dans le même réseau *registry_pozos-network-registry*.   
@@ -189,24 +216,47 @@ cat docker-compose.yml
 - Et bien entendu, nous exposons les ports nécessaires  ```5000:5000``` et ```8090:80```          
   Etc...
          
-Lançons maintenant notre stack par la commande ```docker-compose up -d```
- 
-Nous constatons aussi que le réseau *registry_pozos-network-registry* a été créé
+Lançons maintenant notre stack par la commande ```docker-compose up -d```         
+Ensuite vérifions que notre stack est bien démarrée par la commande ```docker-compose ps```      
+
+
+![Alt text]()
+
+
+Nous constatons aussi que le réseau *registry_pozos-network-registry* a été créé           
+
+
+![Alt text]()
+
  
 En faisant un test sur le port exposé  8090 (comme mentionné dans le fichier docker-compose).     
-On a bien l’affichage du registre pour le moment vide
+On a bien l’affichage du registre pour le moment vide           
+
+
+ ![Alt text]()
  
 
-Poussons-y l’image créée pour l’application de gestion des étudiants. Commençons par vérifier les images existantes
+Poussons-y l’image créée pour l’application de gestion des étudiants. Commençons par vérifier les images existantes                  
+
+
+![Alt text]()
+
  
-Par la suite, faisons un tag sur l’image
+Par la suite, faisons un tag sur l’image              
+
+![Alt text]()
+
  
-Nous pouvons désormais faire un push de l’image sur le régistre, précisant toujours le port 5000            
-(comme précisé dans le fichier docker-compose associé)
+Nous pouvons désormais faire un push de l’image sur le régistre, précisant toujours le port 5000         
+(comme précisé dans le fichier docker-compose associé)               
+
+
+![Alt text]()
  
-Une fois cela fait, nous actualisons la page et pouvons constater le changement sur le frontend du régistre :
- 
-En cliquant sur le nom de l’image, on obtient beaucoup de détails:
+Une fois cela fait, nous actualisons la page et pouvons constater le changement sur le frontend du régistre :            
+En cliquant sur le nom de l’image, on obtient beaucoup de détails:            
+
+![Alt text]()
  
 
 ## Conclusion:

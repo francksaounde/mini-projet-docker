@@ -43,7 +43,7 @@ Une fois l’image créée, vérifions de nouveau la liste des images,
 Nous constatons qu’elle a été mise à jour :     
  
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/confirmation%20build%20api_image.png)
 
 
 Nous pouvons donc lancer un container pour l’api à base de cette nouvelle image.      
@@ -58,7 +58,7 @@ docker run -d --name api_app -v ${PWD}:/data -p 5000:5000 api_image
 Ayant lancé le container en arrière-plan (grâce à l’option -d dans la commande), regardons la liste de tous nos containers (option -a)    
 Et interrogeons les logs pour confirmer que notre unique container est bien lancé et prêt à écouter:        
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/logs%20d%C3%A9marrage%20container%20api_app.png)
  
 
 Nous allons maintenant effectuer une requête vers le container via la commande ‘curl’.       
@@ -68,7 +68,7 @@ sur laquelle tourne le container (d’où localhost), et nous spécifions le por
 On peut donc voir les informations des étudiants enregistrés:         
 
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/curl%20api_app.png)
 
  
 
@@ -158,24 +158,24 @@ networks:
 Au préalable, supprimons le container créé précédemment             
  
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/suppression%20container%20api_app.png)
 
 
 
 Mettons à jour le fichier docker-compose.yml               
  
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker%20compose%20api_app%20et%20web_app.png)
 
 
 Mettons à jour le fichier index.php avec le nom du container de l'api et le port exposé 
 (5000 tel que mentionné dans le docker-compose)                
  
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/update_url_index_php.png)
 
 
 Lançons maintenant notre stack par la commande ```docker-compose up```         
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-compose-up-api-and-web-app.png)
 
 
  
@@ -183,7 +183,7 @@ Lançons maintenant notre stack par la commande ```docker-compose up```
 Vérifions aussi que l’api est accessible via notre interface web.        
 Après avoir cliqué sur le bouton "List Student" nous avons bien la liste des étudiants enregistrés         
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/ihm-api-and-web-app-confirmation.png)
 
 
  
@@ -191,7 +191,7 @@ Après avoir cliqué sur le bouton "List Student" nous avons bien la liste des �
 
 Au préalable nous supprimons la stack lancée précédemment,         
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-compose-down-api-and-web-app.png)
 
 
 Ensuite nous créons un répertoire *'registry'* et nous plaçons à l'intérieur. Puis nous créons    
@@ -205,7 +205,7 @@ vi docker-compose.yml
 cat docker-compose.yml
  ```                          
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-compose-registry.png)
 
 
 - Nous mettons le registry et l'interface dans le même réseau *registry_pozos-network-registry*.   
@@ -220,44 +220,50 @@ Lançons maintenant notre stack par la commande ```docker-compose up -d```
 Ensuite vérifions que notre stack est bien démarrée par la commande ```docker-compose ps```      
 
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-compose-ps-confirmation-registry.png)
 
 
 Nous constatons aussi que le réseau *registry_pozos-network-registry* a été créé           
 
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-network-ls-confirmation-network-registry.png)
 
  
 En faisant un test sur le port exposé  8090 (comme mentionné dans le fichier docker-compose).     
 On a bien l’affichage du registre pour le moment vide           
 
 
- ![Alt text]()
+ ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/ihm-confirmation-registry-vide.png)
  
 
 Poussons-y l’image créée pour l’application de gestion des étudiants. Commençons par vérifier les images existantes                  
 
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/liste-des-images-apres-d%C3%A9marrage-registry.png)
 
  
 Par la suite, faisons un tag sur l’image              
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-tag-image-a-push.png)
 
  
 Nous pouvons désormais faire un push de l’image sur le régistre, précisant toujours le port 5000         
 (comme précisé dans le fichier docker-compose associé)               
 
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-push-image-to-registry.png)
  
 Une fois cela fait, nous actualisons la page et pouvons constater le changement sur le frontend du régistre :            
+
+
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/confirmation%20ihm%20image%20pouss%C3%A9e%20sur%20regitry.png)
+
+
 En cliquant sur le nom de l’image, on obtient beaucoup de détails:            
 
-![Alt text]()
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/d%C3%A9tails-image-pouss%C3%A9e-sur-registry.png)
  
+
 
 ## Conclusion:
 

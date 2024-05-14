@@ -1,22 +1,22 @@
 
-# Mini projet docker
+# Mini-project docker
 
-#### Projet réalisé par Saounde Franck 
+#### Project carried out by Saounde Franck 
 
 ## Introduction
-Dans ce document nous répondons aux questions relatives au mini projet sur docker dans le cadre du bootcamp devops 19 Eazytraining.
+In this document we answer questions relating to the mini project on docker as part of the devops 19 Eazytraining bootcamp.
 
 ## Build and test :
 
-Pour la construction de l'image de l'api, plaçons-nous dans le répertoire contenant le Dockerfile correspondant
+To build the api image, let's go to the directory containing the corresponding Dockerfile     
 
 ```bash 
 cd mini-projet-docker/
 git clone https://github.com/diranetafen/student-list.git
 cd student-list/simple_api/
 ```
-Une fois dans le bon répertoire, 
-mettons à jour le fichier Dockerfile en suivant les recommandations de l’énoncé :
+Once we're in the right directory 
+let's update the Dockerfile following the recommendations in the statement :
 
 ```bash 
 FROM python:3.8-buster
@@ -31,67 +31,68 @@ EXPOSE 5000
 CMD ["python3", "./student_age.py"]
 ```
 
-Vérifions maintenant la liste des images disponibles et lançons la création de l’image       
-que nous appelons *api_image*, à partir du Dockerfile qu’on vient de modifier.     
+Let's now check the list of available images and start creating the image       
+which we call *api_image*, from the Dockerfile we've just modified.     
 
-Puisqu’on est dans le répertoire qui contient le Dockerfile on indique le contexte courant par un point (‘.’)             
+Since we're in the directory containing the Dockerfile, we indicate the current context with a dot (‘.’)                          
 
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/build_api_image.png)
 
-Une fois l’image créée, vérifions de nouveau la liste des images,     
-Nous constatons qu’elle a été mise à jour :     
+Once the image has been created, check the list of images again,     
+We can see that it has been updated:     
  
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/confirmation%20build%20api_image.png)
 
 
-Nous pouvons donc lancer un container pour l’api à base de cette nouvelle image.      
-Nommons notre nouveau container *api_app*.        
-Par la même occasion montons le répertoire courant (${PWD}) comme volume et associons-le au répertoire /data du container.       
-La commande de lancement de notre container est alors:     
+We can now launch an api container based on this new image.      
+Let's name our new container *api_app*.        
+At the same time, mount the current directory (${PWD}) as a volume and associate it with the container's /data directory.       
+The command to launch our container is then:     
 
 ```bash
 docker run -d --name api_app -v ${PWD}:/data -p 5000:5000 api_image
 ```
 
-Ayant lancé le container en arrière-plan (grâce à l’option -d dans la commande), regardons la liste de tous nos containers (option -a)    
-Et interrogeons les logs pour confirmer que notre unique container est bien lancé et prêt à écouter:        
+Having launched the container in the background (thanks to the -d option in the command), let's look at the list of all our containers (-a option)    
+And check the logs to confirm that our single container has been launched and is ready to listen:        
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/logs%20d%C3%A9marrage%20container%20api_app.png)
  
 
-Nous allons maintenant effectuer une requête vers le container via la commande ‘curl’.       
+We're now going to make a request to the container using the ‘curl’ command.       
 
-Nous modifions la commande fournie dans l’énoncé en ajoutant l’adresse de l’hôte -qui est notre machine virtuelle-   
-sur laquelle tourne le container (d’où localhost), et nous spécifions le port 5000 qui a été exposé.     
-On peut donc voir les informations des étudiants enregistrés:         
+We modify the command provided in the statement by adding the address of the host - which is our virtual machine -   
+on which the container is running (hence localhost), and we specify port 5000 which has been exposed.     
+We can now see the information for registered students:         
 
 
-![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/curl%20api_app.png)
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/curl%20api_app.png)             
 
  
 
+
 ## Infrastructure As Code :
 
-Nous éditons un fichier docker-compose.yml pour déployer nos deux services.     
-Donnons quelques commentaires de son contenu:
+We edit a docker-compose.yml file to deploy our two services.     
+Let's give a few comments on its contents:
 
-- Nous indiquons la version du docker-compose ```version: "3.8"```
+- We indicate the version of the docker-compose ```version: "3.8"```
 
-##### Service web
+##### Web Service
 
-- *web_app* désigne le nom du container frontend ```container_name: web_app```
+- *web_app* is the name of the frontend container ```container_name: web_app```
 
-- Le container *web_app* tourne à base de l'image *php:apache* ```image: php:apache```
+- The *web_app* container runs on the *php:apache* image ```image: php:apache```
 
-- Apache est un serveur web qui utilise le port 80 de l'hôte  
-Nous sommes donc contraints d'utiliser le port 80 au niveau du container   
-Nous choisissons de lui associer le port externe 80,    
-D'où: ```ports "80:80"```    
+-Apache is a web server that uses port 80 on the host  
+We are therefore forced to use port 80 at container level   
+We choose to associate it with external port 80,    
+Hence: ```ports "80:80"```    
 
-- Nous indiquons l'utilisateur *toto* et son mot de passe *python*,   
-tels que fournis par la commande "curl" précédemment utilisée et tel que mentionné dans le code python
+- We specify the user *toto* and its password *python*,   
+as supplied by the ‘curl’ command used earlier and as mentioned in the python code
 
 ```
 - environment:
@@ -99,30 +100,30 @@ tels que fournis par la commande "curl" précédemment utilisée et tel que ment
       - PASSWORD=python
 ```
 
-- Nous indiquons à apache d'utiliser notre fichier index.php à la place de sa page par défaut
+- We tell Apache to use our index.php file instead of its default page
 
   ```volumes: ./website:/var/www/html```
  
 
-- Nous définissons un réseau dans lequel nous mettons les deux containers.    
-Ceci pour leur permettre de communiquer:      
+- We define a network in which we put the two containers.    
+This will allow them to communicate:      
    ```networks: student_network```         
 
 
 
-##### Service api:
+##### Api Service:
    
-- Nous indiquons le répertoire dans lequel trouver le Dockerfile pour construire l'image de l'api       
+- We indicate the directory in which to find the Dockerfile to build the api image       
   ```build: context: ./simple_api```
     
-- Comme dans la partie précédente, nous montons un volume        
+- As in the previous section, we are mounting a volume        
     ```volumes:"${PWD}/simple_api:/data"```
    
-- Nous exposons le port 5000 à l'intérieur du container et l'associons au port 5000 de l'hôte    
+- We expose port 5000 inside the container and associate it with port 5000 on the host    
     ```ports: "5000:5000"```
 
 
-En définitive, voici la structure de notre fichier docker-compose.yml
+To sum up, here is the structure of our docker-compose.yml file
 
 ```bash 
 version: "3.8"
@@ -155,48 +156,51 @@ networks:
     student_network:
 ```
 
-Au préalable, supprimons le container créé précédemment             
+First, let's delete the container created earlier             
  
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/suppression%20container%20api_app.png)
 
 
 
-Mettons à jour le fichier docker-compose.yml               
+Let's update the docker-compose.yml file        
  
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker%20compose%20api_app%20et%20web_app.png)
 
 
-Mettons à jour le fichier index.php avec le nom du container de l'api et le port exposé 
-(5000 tel que mentionné dans le docker-compose)                
+Let's update the index.php file with the name of the api container and the exposed port 
+(5000 as mentioned in the docker-compose)                
  
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/update_url_index_php.png)
 
 
-Lançons maintenant notre stack par la commande ```docker-compose up```         
+Now let's run our stack with the ```docker-compose up``` command         
+
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-compose-up-api-and-web-app.png)
 
 
  
 
-Vérifions aussi que l’api est accessible via notre interface web.        
-Après avoir cliqué sur le bouton "List Student" nous avons bien la liste des étudiants enregistrés         
+Let's also check that the api is accessible via our web interface.        
+After clicking on the ‘List Student’ button, we have the list of registered students         
 
-![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/ihm-api-and-web-app-confirmation.png)
+
+![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/ihm-api-and-web-app-confirmation.png)                    
+
+
 
 
  
 ## Docker Registry 
 
-Au préalable nous supprimons la stack lancée précédemment,         
+First we delete the stack launched previously,         
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-compose-down-api-and-web-app.png)
 
 
-Ensuite nous créons un répertoire *'registry'* et nous plaçons à l'intérieur. Puis nous créons    
-le fichier docker-compose pour le registre et l’interface:    
-
+Then we create a *‘registry’* directory and place it inside. Then we create    
+the docker-compose file for the registry and the interface:    
 
 ```bash 
 mkdir registry
@@ -208,58 +212,58 @@ cat docker-compose.yml
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-compose-registry.png)
 
 
-- Nous mettons le registry et l'interface dans le même réseau *registry_pozos-network-registry*.   
-- Nous définissons des variables d'environnement pour pouvoir entre autres:
-  Supprimer les images créées ```DELETE_IMAGES=true```             
-- Pour donner un titre au régistre ```REGISTRY_TITLE=pozos-images-registry```     
-- Pour définir l'url d'accès à l'interface ```NGINX_PROXY_PASS_URL=http://pozos-backend-registry:5000```    
-- Et bien entendu, nous exposons les ports nécessaires  ```5000:5000``` et ```8090:80```          
-  Etc...
+- We put the registry and the interface on the same *registry_pozos-network-registry* network.   
+- We define environment variables so that we can, among other things:
+  Delete images created ```DELETE_IMAGES=true```             
+- To give a title to the ```REGISTRY_TITLE=pozos-images-registry``` register     
+- To define the access url for the ```NGINX_PROXY_PASS_URL=http://pozos-backend-registry:5000``` interface    
+- And, of course, we expose the necessary  ```5000:5000``` and ```8090:80``` ports          
+  And so on...
          
-Lançons maintenant notre stack par la commande ```docker-compose up -d```         
-Ensuite vérifions que notre stack est bien démarrée par la commande ```docker-compose ps```      
+Now let's run our stack with the ```docker-compose up -d``` command         
+Next, let's check that our stack has been started using the ```docker-compose ps``` command      
 
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-compose-ps-confirmation-registry.png)
 
 
-Nous constatons aussi que le réseau *registry_pozos-network-registry* a été créé           
+We can also see that the *registry_pozos-network-registry* network has been created               
 
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-network-ls-confirmation-network-registry.png)
 
  
-En faisant un test sur le port exposé  8090 (comme mentionné dans le fichier docker-compose).     
-On a bien l’affichage du registre pour le moment vide           
+By running a test on the exposed port 8090 (as mentioned in the docker-compose file).     
+The registry is displayed as empty for the moment           
 
 
  ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/ihm-confirmation-registry-vide.png)
  
 
-Poussons-y l’image créée pour l’application de gestion des étudiants. Commençons par vérifier les images existantes                  
+Let's push in the image created for the student management application. Let's start by checking the existing images                
 
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/liste-des-images-apres-d%C3%A9marrage-registry.png)
 
  
-Par la suite, faisons un tag sur l’image              
+Next, tag the image           
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-tag-image-a-push.png)
 
  
-Nous pouvons désormais faire un push de l’image sur le régistre, précisant toujours le port 5000         
-(comme précisé dans le fichier docker-compose associé)               
+We can now push the image to the registry, always specifying port 5000         
+(as specified in the associated docker-compose file)               
 
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/docker-push-image-to-registry.png)
  
-Une fois cela fait, nous actualisons la page et pouvons constater le changement sur le frontend du régistre :            
+Once this has been done, we refresh the page and can see the change on the registry frontend:            
 
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/confirmation%20ihm%20image%20pouss%C3%A9e%20sur%20regitry.png)
 
 
-En cliquant sur le nom de l’image, on obtient beaucoup de détails:            
+Clicking on the name of the image reveals a great deal of detail:            
 
 ![Alt text](https://github.com/francksaounde/student-list/blob/main/screenshots/d%C3%A9tails-image-pouss%C3%A9e-sur-registry.png)
  
@@ -267,10 +271,10 @@ En cliquant sur le nom de l’image, on obtient beaucoup de détails:
 
 ## Conclusion:
 
-Pour conclure, nous pouvons souligner que ce travail nous a permis de revoir un grand nombre de notions
-abordées dans le cadre du module sur l’introduction à Docker.         
-Nous avons pu approfondir en faisant des recherches notamment sur l’utilisation des volumes.        
-Le caractère très concret de cet exercice permet aussi de se mettre dans des conditions proches de celles d’un cas d’entreprise.
+To conclude, we can emphasise that this work has enabled us to review a large number of notions
+covered in the Introduction to Docker module.         
+We were able to delve deeper by doing some research, particularly into the use of volumes.        
+The very concrete nature of this exercise also allowed us to put ourselves in conditions close to those of a business case.
 
 
 
